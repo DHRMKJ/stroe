@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthModule, EntityModule } from '../../core';
 import { AccountSessionService } from './account-session.service';
+import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
-import { GoogleAuthMutation } from './google-auth.mutation';
 
 @Module({
   imports: [EntityModule, AuthModule],
-  providers: [GoogleAuthMutation, AccountService, AccountSessionService],
+  providers: [AccountSessionService, AccountService],
+  controllers: [AccountController],
 })
 export class AccountModule {}

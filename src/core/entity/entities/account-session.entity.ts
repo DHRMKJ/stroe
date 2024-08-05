@@ -30,6 +30,9 @@ export class AccountSessionEntity {
   @RelationId((el: AccountSessionEntity) => el.account)
   accountId!: AccountEntity['id'];
 
+  @Column({ name: 'last_logged_in' })
+  loggedInAt: Date;
+
   @Column({ name: 'ip_address', type: 'text' })
   ipAddress!: string;
 
@@ -44,7 +47,6 @@ export class AccountSessionEntity {
     this.account = Promise.resolve(init.account);
     this.ipAddress = init.ipAddress;
     this.validTill = getValidity(ACCESS_TOKEN_VALIDITY_IN_HOURS, 'hour');
-
     return this;
   }
 }

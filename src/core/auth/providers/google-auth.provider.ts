@@ -17,6 +17,7 @@ export class GoogleAuthProvider {
   async getGoogleProfile(accessToken: string) {
     const client = this.getClient();
     const profile = await client.getTokenInfo(accessToken);
+
     if (!profile.email_verified) {
       throw new UnprocessableEntityException(
         'Google account email is not verified',

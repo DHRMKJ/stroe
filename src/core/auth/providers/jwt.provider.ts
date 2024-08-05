@@ -1,6 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import jwt, { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN_VALIDITY_IN_HOURS } from '../../../common/constant';
 import { Configuration } from '../../../configuration';
 
@@ -10,7 +10,7 @@ export type JwtPayload = {
 
 @Injectable()
 export class JwtProvider {
-  private issuer = 'flope-invoice-backend';
+  private issuer = 'study-room-of-epicness';
   private accessTokenSubject = 'access-token';
 
   constructor(
@@ -38,10 +38,10 @@ export class JwtProvider {
       }) as JwtPayload;
       return { accountSessionId };
     } catch (err) {
-      if (err instanceof TokenExpiredError) {
+      if (err instanceof jwt.TokenExpiredError) {
         throw new UnauthorizedException('Access token expired');
       }
-      if (err instanceof JsonWebTokenError) {
+      if (err instanceof jwt.JsonWebTokenError) {
         throw new UnauthorizedException('Invalid access token');
       }
       throw err;

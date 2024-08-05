@@ -1,21 +1,25 @@
-import { Injectable } from '@nestjs/common';
 import { EntityManager } from 'typeorm';
 import { AccountEntity } from '../../core';
+import { DiscordAuthProvider } from '../../core/auth/providers/discord-auth.provider';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AccountService {
-  async getAccountByGoogleUserId(
-    em: EntityManager,
-    googleUserId: string,
-  ): Promise<AccountEntity | null> {
-    return await em.findOneBy(AccountEntity, { googleUserId });
+  constructor(private readonly discord: DiscordAuthProvider) {}
+
+  async createAccount(em: EntityManager, code: string): Promise<AccountEntity> {
+    const profile = await this.discord.getAccountFromProvider(code);
+    const account = await this.getAccountById(em, { discordId: profile.id });
+    if (account) {
+      return account;
+    }
+    const newAccount = new AccountEntity().init(profile);
+    return await em.save(newAccount);
   }
 
-  async createAccount(
-    em: EntityManager,
-    { email, googleUserId }: { googleUserId: string; email: string },
-  ): Promise<AccountEntity | null> {
-    const newAccount = new AccountEntity().init({ email, googleUserId });
-    return await em.save(newAccount);
+  async getAccountById(em: EntityManager, payload: { discordId: string }) {
+    return await em.findOne(AccountEntity, {
+      where: { discordId: payload.discordId },
+    });
   }
 }

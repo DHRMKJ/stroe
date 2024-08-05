@@ -8,10 +8,12 @@ export class AccountSessionService {
     em: EntityManager,
     { account, ipAddress }: { account: AccountEntity; ipAddress: string },
   ): Promise<AccountSessionEntity> {
+    await this.deleteAllExistingSessionsOfAccount(em, account);
     const newAccountSession = new AccountSessionEntity().init({
       account,
       ipAddress,
     });
+    newAccountSession.loggedInAt = new Date();
     return await em.save(newAccountSession);
   }
 

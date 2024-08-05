@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
 type Unit = 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'week';
 

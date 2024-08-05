@@ -14,6 +14,9 @@ export type Configuration = {
 
   GOOGLE_AUTH_CLIENT_ID: string;
   GOOGLE_AUTH_CLIENT_SECRET: string;
+
+  DISCORD_AUTH_CLIENT_ID: string;
+  DISCORD_AUTH_CLIENT_SECRET: string;
 };
 
 export function configuration(): Configuration {
@@ -40,5 +43,7 @@ export function configuration(): Configuration {
 
     GOOGLE_AUTH_CLIENT_ID: process.env.GOOGLE_AUTH_CLIENT_ID,
     GOOGLE_AUTH_CLIENT_SECRET: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+    DISCORD_AUTH_CLIENT_ID: process.env.DISCORD_AUTH_CLIENT_ID,
+    DISCORD_AUTH_CLIENT_SECRET: process.env.DISCORD_AUTH_CLIENT_SECRET,
   };
 }
